@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <title>OS Course Project2 - Memory Management</title>
+
+    <link rel="stylesheet" type="text/css" href="css/memory_management.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- 左半部分的容器，用来装四个内存块 -->
+        <div class="left">
+            <!-- 项目标题 -->
+            <header class="head-title">
+                <h1 style="text-align: center;color:aliceblue;">内存管理项目二——请求调页存储管理方式模拟</h1>
+                <h3 style="text-align: center;color:rgb(214, 168, 219);">2051498 储岱泽 同济大学</h3>
+            </header>
+            <!-- 选择想要使用的算法 -->
+            <div class="algorithm-input">
+                <h4>选择算法</h4>
+                <label for="fifo-ratio1">
+                    <input type="radio" name="algorithm" id="FIFORatio" value="FIFO" checked> FIFO
+                </label>
+                <label for="lru-ratio">
+                    <input type="radio" name="algorithm" id="LRURatio" value="LRU"> LRU
+                </label>
+            </div>
+
+            <!-- 模拟四个内存块 -->
+            <div class="memory-container">
+                <div class="top-blocks">
+                    <div class="block" id="block01">
+                        <h1>1</h1>
+                        <div  class="block-content" id="block-0"></div>
+                    </div>
+                    <div class="block" id="block11">
+                        <h1>2</h1>
+                        <div class="block-content" id="block-1"></div>
+                    </div>
+                </div>
+                <!-- 开始运行的按钮 -->
+                <button id="startBtn">开始运行</button>
+                <div class="bottom-blocks">
+                    <div class="block" id="block21">
+                        <h1>3</h1>
+                        <div class="block-content" id="block-2"></div>
+                    </div>
+                    <div class="block" id="block31">
+                        <h1>4</h1>
+                        <div class="block-content" id="block-3"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 底下的容器 -->
+            <div class="footer">
+                <div style="margin-top: 23px;color:#f9f4dc;background-color: rgb(236, 108, 183);">
+                    <span style="color:#f9f4dc;background-color: rgb(236, 108, 183);">内存块数：<span
+                            id="numberOfTotalMemoryBlocks"
+                            style="color:#f9f4dc;background-color: rgb(236, 108, 183);">4&nbsp;&nbsp;&nbsp;</span></span>
+                    <span style="color:#f9f4dc;background-color: rgb(236, 108, 183);">总指令数：<span
+                            id="numberOfTotalInstructions"
+                            style="color:#f9f4dc;background-color: rgb(236, 108, 183);">320&nbsp;&nbsp;&nbsp;</span></span>
+                    <span style="color:#f9f4dc;background-color: rgb(236, 108, 183);">每页存放指令数：<span
+                            id="numberOfInstructionsInEachPage"
+                            style="color:#f9f4dc;background-color: rgb(236, 108, 183);">10&nbsp;&nbsp;&nbsp;</span></span>
+                </div>
+                <div
+                    style="position: absolute;bottom: 10px;left:45%;color:#f9f4dc;background-color: rgb(236, 108, 183);">
+                    @Github deidei1210</div>
+            </div>
+        </div>
+
+        <!-- 右半部分容器，用来显示缺页率和模拟信息 -->
+        <div class="right">
+            <div class="algorithm-result">
+                <h4>模拟结果</h4>
+                <p>当前指令：<span id="currentInstruction">NULL</span></p>
+                <p>缺页次数：<span id="numberOfMissingPages">NULL</span></p>
+                <p>缺页率：<span id="pageFaultRate">NULL</span></p>
+                
+            </div>
+            <h4 style="text-align: center;color: rgb(85,232,113);">运行信息</h4>
+            <!-- 输出模拟运行信息 -->
+            <div class="algorithm-console">
+                <textarea class="console" name="console" id="console" cols="30" rows="29" placeholder="【模拟运行信息】"
+                    readonly></textarea>
+            </div>
+            <!-- 写一些算法介绍 -->
+            <div class="algorithm-introduce">
+                <h3 style="margin:5px;">FIFO算法</h3>
+                <p style="color:#fcfbf6;">FIFO 算法是最简单的页面置换算法，它的核心思想是按照页面调入内存的顺序，先进先出地替换页面。也就是说，内存中驻留时间最长的页面最先被置换出去。</p>
+                <h3 style="margin:5px;">LRU算法</h3>
+                <p style="color:#fbfaf7;">LRU 算法是一种基于时间局部性原理的页面置换算法。它的核心思想是尽可能选择最近最久未使用的页面进行置换。</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/main.js"></script>
+</body>
+
+</html>

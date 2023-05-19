@@ -1,0 +1,139 @@
+/* 设置 HTML 和 body 的高度为 100% */
+html,
+body {
+    height: 100%;
+}
+
+/* 设置所有元素的 margin 和 padding 为 0 */
+* {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(30,31,41);
+    color:rgb(135, 218, 238);
+}
+
+/* 设置容器的高度为 100% */
+.container {
+    height: 100%;
+}
+
+/* 设置左侧容器的宽度为屏幕宽度的五分之四，高度为屏幕高度，同时将其设置为浮动元素 */
+.left {
+    width: 75%;
+    height: 100%;
+    /* background-color: red; */
+    float: left;
+}
+
+/* 设置右侧容器的宽度为屏幕宽度的五分之一，高度为屏幕高度，并将其设置为 inline-block 元素 */
+.right {
+    width: 23%;
+    height: 100%;
+    background-color: rgb(30,31,41);
+    border-left: solid 1px rgb(177, 135, 234);
+    display: inline-block;
+}
+
+.footer {
+    width: 75%;
+    height: 10%;
+    background-color: rgb(236, 108, 183);
+    color:#f9f4dc;
+    position: absolute;
+    bottom: 0px;
+}
+
+.algorithm-input {
+    text-align: center;
+}
+
+.head-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#FIFORatio {
+    margin-right: 5px;
+}
+
+#LRURatio {
+    margin-left: 5px;
+}
+
+.block {
+    border: solid 2px rgb(177, 135, 234);
+    border-radius: 10px;
+    width: 200px;
+    height: 200px;
+    margin-right: 36px;
+    margin-left: 44px;
+    margin-top: 7px;
+
+    /* 设置方块之间的间距 */
+}
+.block>h1{
+    background-color: #ffffff00;
+    color:rgb(85,232,113);
+    text-align: center;
+}
+
+#block11,
+#block31 {
+    margin-top: 39px;
+}
+
+.block-content{
+    color:aliceblue;
+    text-align: center;
+    margin:20px;
+    font-size:larger;
+}
+
+.memory-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.top-blocks,
+.bottom-blocks {
+    display: block;
+    margin-top: 20px;
+}
+
+#startBtn{
+    height: 30px;
+    width: 80px;
+    background-color: rgb(236, 108, 183);
+    color:#f9f4dc;
+}
+.footer{
+    color:rgb(223, 236, 133);
+    text-align: center;
+}
+
+.algorithm-result,
+.algorithm-introduce{
+    margin: 15px; 
+    
+}
+
+.algorithm-result>p,
+.algorithm-result>p>span
+{
+    color:rgb(223, 236, 133);
+}
+.algorithm-result>h4{
+    color:aliceblue;
+}
+
+.algorithm-console{
+    margin: 15px; 
+}
+
+#console{
+    width: 370px;
+    border:solid 2px rgb(177, 135, 234);
+    background-color: #e1e1e1;
+    color:#737373;
+}
