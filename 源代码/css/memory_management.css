@@ -23,6 +23,9 @@ body {
     height: 100%;
     /* background-color: red; */
     float: left;
+    /* position: fixed; */
+    /* right:0px; */
+    /* z-index: 3;    */
 }
 
 /* 设置右侧容器的宽度为屏幕宽度的五分之一，高度为屏幕高度，并将其设置为 inline-block 元素 */
@@ -32,14 +35,16 @@ body {
     background-color: rgb(30,31,41);
     border-left: solid 1px rgb(177, 135, 234);
     display: inline-block;
+    position:fixed;
+    right:0px;
 }
 
 .footer {
-    width: 75%;
-    height: 10%;
+    width: 80%;
+    height: 7%;
     background-color: rgb(236, 108, 183);
     color:#f9f4dc;
-    position: absolute;
+    position: fixed;
     bottom: 0px;
 }
 
@@ -132,8 +137,46 @@ body {
 }
 
 #console{
-    width: 370px;
+    width: 360px;
     border:solid 2px rgb(177, 135, 234);
     background-color: #e1e1e1;
     color:#737373;
+}
+
+table,
+th,
+td {
+    border: 1px solid rgb(97, 159, 175);
+    border-collapse: separate;
+}
+th{
+    color:rgb(223, 236, 133);
+}
+
+table {
+  width: 50%;
+  margin: auto;
+  /*height: 100px;*/
+}
+
+th,
+td {
+    padding: 5px;
+    width: 150px;
+    height:30px;
+}
+
+.show{
+  height:650px;
+  overflow-y: scroll;
+  overflow-x: none;
+}
+
+#memory_table{
+  width: 70%;
+  margin: auto;
+  /*height: 650px;*/
+  vertical-align: middle;
+  margin-top: 40px;
+  margin-bottom:100px;
 }

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>OS Course Project2 - Memory Management</title>
+    <title>Memory Management Simulator</title>
 
     <link rel="stylesheet" type="text/css" href="css/memory_management.css">
 </head>
@@ -34,7 +34,7 @@
                 <div class="top-blocks">
                     <div class="block" id="block01">
                         <h1>1</h1>
-                        <div  class="block-content" id="block-0"></div>
+                        <div class="block-content" id="block-0"></div>
                     </div>
                     <div class="block" id="block11">
                         <h1>2</h1>
@@ -54,9 +54,26 @@
                     </div>
                 </div>
             </div>
+            <!--结果展示区域-->
+            <div class="show">
+                <table class="presenting_table" id="memory_table" height="100px">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sequence</th>
+                            <th scope="col">Instruction</th>
+                            <th scope="col">Frame 1</th>
+                            <th scope="col">Frame 2</th>
+                            <th scope="col">Frame 3</th>
+                            <th scope="col">Frame 4</th>
+                            <th scope="col">Information</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
             <!-- 底下的容器 -->
             <div class="footer">
-                <div style="margin-top: 23px;color:#f9f4dc;background-color: rgb(236, 108, 183);">
+                <div style="margin-top: 10px;color:#f9f4dc;background-color: rgb(236, 108, 183);">
                     <span style="color:#f9f4dc;background-color: rgb(236, 108, 183);">内存块数：<span
                             id="numberOfTotalMemoryBlocks"
                             style="color:#f9f4dc;background-color: rgb(236, 108, 183);">4&nbsp;&nbsp;&nbsp;</span></span>
@@ -68,7 +85,7 @@
                             style="color:#f9f4dc;background-color: rgb(236, 108, 183);">10&nbsp;&nbsp;&nbsp;</span></span>
                 </div>
                 <div
-                    style="position: absolute;bottom: 10px;left:45%;color:#f9f4dc;background-color: rgb(236, 108, 183);">
+                    style="position: absolute;bottom: 10px;left:45%;color:#f9f4dc;background-color: rgb(236, 108, 183);font-size: small;">
                     @Github deidei1210</div>
             </div>
         </div>
@@ -80,7 +97,7 @@
                 <p>当前指令：<span id="currentInstruction">NULL</span></p>
                 <p>缺页次数：<span id="numberOfMissingPages">NULL</span></p>
                 <p>缺页率：<span id="pageFaultRate">NULL</span></p>
-                
+
             </div>
             <h4 style="text-align: center;color: rgb(85,232,113);">运行信息</h4>
             <!-- 输出模拟运行信息 -->
