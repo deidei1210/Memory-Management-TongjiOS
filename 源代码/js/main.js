@@ -2,6 +2,14 @@
 (function (window) {
     //获取页面DOM
     var document = window.document;
+    // 初始化控制台
+    var console                            //控制台
+    var numberOfTotalMemoryBlocks          //内存块的个数
+    var numberOfTotalInstructions          //指令的个数
+    var numberOfInstructionsInEachPage     //每个页面上的指令个数
+    var currentInstructionSpan             //当前指令
+    var numberOfMissingPagesSpan           //缺页个数的标签
+    var pageFaultRateSpan                  //缺页率的标签
 
     // 获取“开始”按钮
     var startBtn = document.getElementById("startBtn");
@@ -19,17 +27,16 @@
 
     };
 
-    // 初始化控制台
-    var console = new Console("console");
 
-    var numberOfTotalMemoryBlocks = parseInt(document.getElementById("numberOfTotalMemoryBlocks").textContent); // 4
-    var numberOfTotalInstructions = parseInt(document.getElementById("numberOfTotalInstructions").textContent); // 320
-    var numberOfInstructionsInEachPage = parseInt(document.getElementById("numberOfInstructionsInEachPage").textContent); // 10
+    console = new Console("console");
+    numberOfTotalMemoryBlocks = parseInt(document.getElementById("numberOfTotalMemoryBlocks").textContent); // 4
+    numberOfTotalInstructions = parseInt(document.getElementById("numberOfTotalInstructions").textContent); // 320
+    numberOfInstructionsInEachPage = parseInt(document.getElementById("numberOfInstructionsInEachPage").textContent); // 10
 
     // 需要改变的标签元素
-    var currentInstructionSpan = document.getElementById("currentInstruction"); //当前指令模块
-    var numberOfMissingPagesSpan = document.getElementById("numberOfMissingPages"); //缺页次数模块
-    var pageFaultRateSpan = document.getElementById("pageFaultRate");//缺页率模块
+    currentInstructionSpan = document.getElementById("currentInstruction"); //当前指令模块
+    numberOfMissingPagesSpan = document.getElementById("numberOfMissingPages"); //缺页次数模块
+    pageFaultRateSpan = document.getElementById("pageFaultRate");//缺页率模块
 
     // 内存
     var memory = [];
@@ -62,18 +69,19 @@
     };
 
     function init() {
-        //给memory分配相对应内存快个数的空间
-        memory = new Array(numberOfTotalMemoryBlocks);
-        //给指令数组分配相对应指令个数的内存空间
-        instructions = new Array(numberOfTotalInstructions);
         //初始化执行的指令个数为0
         insCount = 0;
         //初始化缺页个数为0
         missingPage = 0;
-
         currentInstructionSpan.textContent = -1;             //显示当前指令
         numberOfMissingPagesSpan.textContent = missingPage;  //显示缺页次数
         pageFaultRateSpan.textContent = missingPage / 320;   //显示缺页率
+        
+        //给memory分配相对应内存快个数的空间
+        memory = new Array(numberOfTotalMemoryBlocks);
+        //给指令数组分配相对应指令个数的内存空间
+        instructions = new Array(numberOfTotalInstructions);
+
     };
 
     function initMemory() {
@@ -194,7 +202,7 @@
                 };
                 insCount++;  //当前指令被执行过了，所以执行过的指令条数加1
                 instructions[instruct] = true;//把判断instruct指令是否执行过的相对应的数组的项变成true
-               
+
                 var row = document.getElementById("memory_table").insertRow()
                 row.insertCell(0).innerHTML = "💃" + insCount
                 row.insertCell(1).innerHTML = "🌸 NO. " + instruct
@@ -344,7 +352,7 @@
                     row.insertCell(6).innerHTML = "👌 指令" + instruct + "已在内存中"
                 }
                 else {
-                    row.insertCell(6).innerHTML = "❕缺页，指令" + instruct + "不在内存中," + "将指令" + instruct + "所在的页调入内存，替换块" + (stack[0]===0?4:stack[0]);
+                    row.insertCell(6).innerHTML = "❕缺页，指令" + instruct + "不在内存中," + "将指令" + instruct + "所在的页调入内存，替换块" + (stack[0] === 0 ? 4 : stack[0]);
                 }
 
             };
