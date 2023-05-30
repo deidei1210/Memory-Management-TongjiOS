@@ -56,16 +56,18 @@
     };
     //查找物理块中是否有该页⾯
     function isInstructionAvailable(number) {
+        var Judge=false
         for (var i = 0; i < memory.length; i++) {
             if (Math.floor(number / numberOfInstructionsInEachPage) === memory[i]) {
                 // 已经存在，没有发生缺页
                 console.log("指令" + number + "在内存块" + (i + 1) + "中\n");
-                return true;
+                Judge=true
+                break
             };
         };
         // 缺页
         console.log("发生缺页，指令" + number + "不在内存中");
-        return false;
+        return Judge;
     };
 
     function init() {
@@ -76,7 +78,7 @@
         currentInstructionSpan.textContent = -1;             //显示当前指令
         numberOfMissingPagesSpan.textContent = missingPage;  //显示缺页次数
         pageFaultRateSpan.textContent = missingPage / 320;   //显示缺页率
-        
+
         //给memory分配相对应内存快个数的空间
         memory = new Array(numberOfTotalMemoryBlocks);
         //给指令数组分配相对应指令个数的内存空间
@@ -98,6 +100,98 @@
         };
         console.log("<初始化结束>\n");
     };
+    function ChooseInstruction(strategy,instruct) {
+        var result=[]
+        result.push(strategy)
+        result.push(instruct)
+        // var instructionToExe = 0;
+        // 选择运行的指令
+        if (result[0] === 0) { // 顺序执行
+            result[1]++;
+            // 更新策略
+            if (insCount % 4 === 1) {
+                // 向前跳转
+                result[0] = -1;
+            }
+            else if (insCount % 4 === 3) {
+                // 向后跳转
+                result[0] = 1;
+            };
+        }
+        else if (result[0] === 1) {   // 向后跳转
+
+            if (result[1] + 1 > 319) {  //如果发现再往后就要越界了，那就改变策略为向前跳转
+                result[0] = -1;
+                ChooseInstruction(result[0],result[1])
+            };
+
+            //随机生成一个后面的指令
+            result[1] = Math.floor(Math.random() * (numberOfTotalInstructions - (result[1] + 1)) + (result[1] + 1));
+
+            // 更新策略
+            // 顺序执行
+            result[0] = 0;
+        }
+        else if (result[0] === -1) { // 向前跳转
+            if (result[1] - 2 < 0) {
+                result[0] = 1;     //改成向后跳转
+                ChooseInstruction(result[0])
+            };
+
+            //随机生成一个前面的指令
+            result[1] = Math.floor(Math.random() * (result[1] - 1));
+
+            // 更新策略
+            // 顺序执行
+            result[0] = 0;
+        };
+
+        // 处理越界
+        if (result[1] < 0) {
+            // 向下越界
+            result[1] = -1;
+
+            // 更新策略
+            // 向后跳转
+            result[0] = 1;
+
+            ChooseInstruction(result[0],result[1])
+        }
+        else if (result[1] >= 320) {
+            // 向上越界
+            result[1] = 321
+
+            // 更新策略
+            // 向前跳转
+            result[0] = -1;
+
+            ChooseInstruction(result[0],result[1])
+        };
+
+
+        return result
+    };
+    function ChangeTable(instruct , block,insCount){
+        var row = document.getElementById("memory_table").insertRow()
+        row.insertCell(0).innerHTML = "💃" + insCount
+        row.insertCell(1).innerHTML = "🌸 NO. " + instruct
+        row.insertCell(2).innerHTML =
+            memory[0] == undefined ? "Empty" : memory[0]
+        row.insertCell(3).innerHTML =
+            memory[1] == undefined ? "Empty" : memory[1]
+        row.insertCell(4).innerHTML =
+            memory[2] == undefined ? "Empty" : memory[2]
+        row.insertCell(5).innerHTML =
+            memory[3] == undefined ? "Empty" : memory[3]
+
+        //在内存中
+        if (!flag) {
+            row.insertCell(6).innerHTML = "👌 指令" + instruct + "已在内存中"
+        }
+        else {
+            row.insertCell(6).innerHTML = "❕缺页，指令" + instruct + "不在内存中," + "将指令" + instruct + "所在的页调入内存，替换块" + block
+        }
+    }
     function FIFO() {
         console.log("使用FIFO算法");
 
@@ -106,76 +200,16 @@
         //  1 : 向后跳转
         // -1 : 向前跳转
         var strategy = 1;
-        var po = 0;
+        var p = 0;
         var instruct = -1;
-
+        
         while (insCount < 320) {
-            // 选择运行的指令
-            if (strategy === 0) { // 顺序执行
-                instruct++;
-                // 更新策略
-                if (insCount % 4 === 1) {
-                    // 向前跳转
-                    strategy = -1;
-                }
-                else if (insCount % 4 === 3) {
-                    // 向后跳转
-                    strategy = 1;
-                };
-            }
-            else if (strategy === 1) {   // 向后跳转
-
-                if (instruct + 1 > 319) {  //如果发现再往后就要越界了，那就改变策略为向前跳转
-                    strategy = -1;
-                    continue;
-                };
-
-                //随机生成一个后面的指令
-                instruct = Math.floor(Math.random() * (numberOfTotalInstructions - (instruct + 1)) + (instruct + 1));
-
-                // 更新策略
-                // 顺序执行
-                strategy = 0;
-            }
-            else if (strategy === -1) { // 向前跳转
-                if (instruct - 2 < 0) {
-                    strategy = 1;     //改成向后跳转
-                    continue;
-                };
-
-                //随机生成一个前面的指令
-                instruct = Math.floor(Math.random() * (instruct - 1));
-
-                // 更新策略
-                // 顺序执行
-                strategy = 0;
-            };
-
-            // 处理越界
-            if (instruct < 0) {
-                // 向下越界
-                instruct = -1;
-
-                // 更新策略
-                // 向后跳转
-                strategy = 1;
-
-                continue;
-            }
-            else if (instruct >= 320) {
-                // 向上越界
-                instruct = 321
-
-                // 更新策略
-                // 向前跳转
-                strategy = -1;
-
-                continue;
-            };
-
-
+            result=ChooseInstruction(strategy,instruct)
+            instruct=result[1]
+            strategy=result[0]
             // 判断选中的指令是否被运行过
-            if (!isInstructionExecuted(instruct)) {
+            var judgeIsInMemory=isInstructionExecuted(instruct)
+            if (!judgeIsInMemory) {
                 // 当前指令没有被运行过
                 // 更新右上角的显示当前指令的标签
                 currentInstructionSpan.textContent = instruct;
@@ -191,38 +225,18 @@
                     // 更新右上角显示当前缺页率的标签
                     pageFaultRateSpan.textContent = missingPage / 320;
 
-                    console.log("将指令" + instruct + "所在的页调入内存，替换块" + (po % 4 + 1) + '\n');
+                    console.log("将指令" + instruct + "所在的页调入内存，替换块" + (p % 4 + 1) + '\n');
 
                     // setTimeout(function () {
-                    document.getElementById('block-' + po % 4).textContent = '指令' + instruct;
+                    document.getElementById('block-' + p % 4).textContent = '指令' + instruct;
 
 
-                    memory[(po++) % 4] = Math.floor(instruct / numberOfInstructionsInEachPage);
+                    memory[(p++) % 4] = Math.floor(instruct / numberOfInstructionsInEachPage);
                     // memory[(po++) % 4] = Math.floor(instruct);
                 };
                 insCount++;  //当前指令被执行过了，所以执行过的指令条数加1
                 instructions[instruct] = true;//把判断instruct指令是否执行过的相对应的数组的项变成true
-
-                var row = document.getElementById("memory_table").insertRow()
-                row.insertCell(0).innerHTML = "💃" + insCount
-                row.insertCell(1).innerHTML = "🌸 NO. " + instruct
-                row.insertCell(2).innerHTML =
-                    memory[0] == undefined ? "Empty" : memory[0]
-                row.insertCell(3).innerHTML =
-                    memory[1] == undefined ? "Empty" : memory[1]
-                row.insertCell(4).innerHTML =
-                    memory[2] == undefined ? "Empty" : memory[2]
-                row.insertCell(5).innerHTML =
-                    memory[3] == undefined ? "Empty" : memory[3]
-
-                //在内存中
-                if (!flag) {
-                    row.insertCell(6).innerHTML = "👌 指令" + instruct + "已在内存中"
-                }
-                else {
-                    row.insertCell(6).innerHTML = "❕缺页，指令" + instruct + "不在内存中," + "将指令" + instruct + "所在的页调入内存，替换块" + ((po - 1) % 4 + 1)
-                }
-
+                ChangeTable(instruct , ((p - 1) % 4 + 1),insCount)
             };
         };
     };
@@ -241,66 +255,9 @@
 
         var instruct = -1;
         while (insCount < 320) {
-            // 选择运行的指令
-            if (strategy === 0) {
-                // 顺序执行
-                instruct++;
-
-                // 更新策略
-                if (insCount % 4 === 1) {
-                    // 向前跳转
-                    strategy = -1;
-                } else if (insCount % 4 === 3) {
-                    // 向后跳转
-                    strategy = 1;
-                };
-            } else if (strategy === 1) {
-                // 向后跳转
-                if (instruct + 1 > 319) {
-                    strategy = -1;
-                    continue;
-                };
-
-                instruct = Math.floor(Math.random() * (numberOfTotalInstructions - (instruct + 1)) + (instruct + 1));
-
-                // 更新策略
-                // 顺序执行
-                strategy = 0;
-            } else if (strategy === -1) {
-                // 向前跳转
-                if (instruct - 2 < 0) {
-                    strategy = 1;
-                    continue;
-                };
-
-                instruct = Math.floor(Math.random() * (instruct - 1));
-
-                // 更新策略
-                // 顺序执行
-                strategy = 0;
-            };
-
-            // 处理越界
-            if (instruct < 0) {
-                // 向下越界
-                instruct = -1;
-
-                // 更新策略
-                // 向后跳转
-                strategy = 1;
-
-                continue;
-            } else if (instruct >= 320) {
-                // 向上越界
-                instruct = 321
-
-                // 更新策略
-                // 向前跳转
-                strategy = -1;
-
-                continue;
-            };
-
+            result=ChooseInstruction(strategy,instruct)
+            instruct=result[1]
+            strategy=result[0]
             // 判断选中的指令是否被运行过
             if (!isInstructionExecuted(instruct)) {
                 // 当前指令没有被运行过
@@ -309,7 +266,8 @@
                 var flag = 0; //如果flag=0表示当前指令就在内存中
                 //如果flag=1表示当前指令不在内存中
                 // 判断选中指令是否在内存中
-                if (!isInstructionAvailable(instruct)) {
+                var judgeIsInMemory=isInstructionAvailable(instruct)
+                if (!judgeIsInMemory) {
                     // 不在内存中，缺页
                     missingPage++;
                     flag = 1;
@@ -334,27 +292,7 @@
 
                 insCount++;
                 instructions[instruct] = true;
-
-                var row = document.getElementById("memory_table").insertRow()
-                row.insertCell(0).innerHTML = "💃" + insCount
-                row.insertCell(1).innerHTML = "🌸 NO. " + instruct
-                row.insertCell(2).innerHTML =
-                    memory[0] == undefined ? "Empty" : memory[0]
-                row.insertCell(3).innerHTML =
-                    memory[1] == undefined ? "Empty" : memory[1]
-                row.insertCell(4).innerHTML =
-                    memory[2] == undefined ? "Empty" : memory[2]
-                row.insertCell(5).innerHTML =
-                    memory[3] == undefined ? "Empty" : memory[3]
-
-                //在内存中
-                if (!flag) {
-                    row.insertCell(6).innerHTML = "👌 指令" + instruct + "已在内存中"
-                }
-                else {
-                    row.insertCell(6).innerHTML = "❕缺页，指令" + instruct + "不在内存中," + "将指令" + instruct + "所在的页调入内存，替换块" + (stack[0] === 0 ? 4 : stack[0]);
-                }
-
+                ChangeTable(instruct , (stack[0] === 0 ? 4 : stack[0]),insCount)
             };
         };
     };
